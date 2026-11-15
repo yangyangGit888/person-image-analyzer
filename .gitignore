@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# 环境变量与密钥
+.env
+.env.*
+!.env.example
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+
+# 临时上传目录（当前版本不落盘，保留以防未来扩展）
+uploads/
+tmp/
