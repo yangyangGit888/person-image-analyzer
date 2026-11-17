@@ -6,9 +6,10 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -18,12 +19,32 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.ai.base import BaseVisionProvider
 from app.ai.factory import create_vision_provider
-from app.api.routes import analyze, health, model
+from app.ai.image_edit.factory import create_image_edit_provider
+from app.ai.segmentation.factory import create_segmentation_provider
+from app.api.routes import (
+    analyze,
+    edit_generations,
+    edit_images,
+    edit_options,
+    edit_tasks,
+    health,
+    model,
+)
 from app.core.config import Settings, get_settings
 from app.core.exceptions import AppError
+from app.repositories.sqlite_repository import SQLiteEditRepository
 from app.schemas.analysis import ErrorDetail, ErrorResponse
 from app.services.analysis_service import AnalysisService
+from app.services.edit_analysis_service import EditAnalysisService
+from app.services.edit_image_service import EditImageService
+from app.services.edit_task_service import EditTaskService
+from app.services.generation_service import GenerationService
 from app.services.image_service import ImageService
+from app.services.mask_service import MaskService
+from app.services.prompt_builder import PromptBuilder
+from app.services.region_detection_service import RegionDetectionService
+from app.services.segmentation_service import SegmentationService
+from app.services.storage_service import StorageService
 
 logger = logging.getLogger(__name__)
 
@@ -46,10 +67,62 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         _configure_logging(app_settings)
         provider: BaseVisionProvider = create_vision_provider(app_settings)
+        image_service = ImageService(app_settings)
+        analysis_service = AnalysisService(provider, app_settings)
+
+        storage = StorageService(app_settings)
+        repository = SQLiteEditRepository(
+            app_settings.storage_path / "edit_state.sqlite3"
+        )
+        await asyncio.to_thread(repository.mark_running_generations_interrupted)
+
+        segmentation_provider = create_segmentation_provider(app_settings)
+        image_edit_provider = create_image_edit_provider(app_settings)
+        mask_service = MaskService(storage)
+        segmentation_service = SegmentationService(segmentation_provider)
+        region_detection_service = RegionDetectionService(provider)
+        prompt_builder = PromptBuilder(app_settings)
+
+        edit_image_service = EditImageService(
+            app_settings,
+            image_service,
+            storage,
+            repository,
+        )
+        edit_analysis_service = EditAnalysisService(
+            app_settings,
+            repository,
+            storage,
+            edit_image_service,
+            analysis_service,
+            region_detection_service,
+            segmentation_service,
+            mask_service,
+        )
+        cleaned = await edit_image_service.cleanup_expired()
+        if cleaned:
+            logger.info("已清理过期编辑图片: count=%s", cleaned)
+        edit_task_service = EditTaskService(repository, prompt_builder)
+        generation_service = GenerationService(
+            app_settings,
+            repository,
+            storage,
+            image_edit_provider,
+        )
+
         app.state.settings = app_settings
         app.state.ai_provider = provider
-        app.state.image_service = ImageService(app_settings)
-        app.state.analysis_service = AnalysisService(provider, app_settings)
+        app.state.image_service = image_service
+        app.state.analysis_service = analysis_service
+        app.state.storage_service = storage
+        app.state.edit_repository = repository
+        app.state.segmentation_provider = segmentation_provider
+        app.state.image_edit_provider = image_edit_provider
+        app.state.mask_service = mask_service
+        app.state.edit_image_service = edit_image_service
+        app.state.edit_analysis_service = edit_analysis_service
+        app.state.edit_task_service = edit_task_service
+        app.state.generation_service = generation_service
 
         logger.info(
             "服务启动: provider=%s model=%s base_url=%s api_key_configured=%s",
@@ -58,12 +131,23 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             provider.base_url,
             app_settings.api_key_configured,
         )
+        logger.info(
+            "编辑模块: image_edit=%s segmentation=%s storage=%s",
+            image_edit_provider.provider_name,
+            segmentation_provider.provider_name,
+            app_settings.storage_path,
+        )
         if not app_settings.api_key_configured:
             logger.warning("未配置 AI_API_KEY，图片分析接口将返回配置错误")
+        if not app_settings.dashscope_configured:
+            logger.warning("未配置 DASHSCOPE_API_KEY，万相编辑接口将返回配置错误")
 
         try:
             yield
         finally:
+            await generation_service.shutdown()
+            await segmentation_provider.aclose()
+            await image_edit_provider.aclose()
             await provider.aclose()
             logger.info("服务已停止")
 
@@ -91,7 +175,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def limit_upload_request_size(request: Request, call_next):
         """在 multipart 解析前拦截明显超限的请求。"""
 
-        if request.url.path == "/api/v1/analyze":
+        if request.url.path in {"/api/v1/analyze", "/api/v1/edit/images"}:
             content_length = request.headers.get("content-length")
             if content_length:
                 try:
@@ -120,6 +204,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(health.router)
     app.include_router(analyze.router)
     app.include_router(model.router)
+    app.include_router(edit_images.router)
+    app.include_router(edit_options.router)
+    app.include_router(edit_tasks.router)
+    app.include_router(edit_generations.router)
 
     @app.get("/", include_in_schema=False)
     async def root() -> dict[str, str]:

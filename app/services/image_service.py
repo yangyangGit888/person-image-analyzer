@@ -40,6 +40,8 @@ class ProcessedImage:
     mime_type: str
     width: int
     height: int
+    processed_width: int
+    processed_height: int
     source_format: str
     original_size: int
     processed_size: int
@@ -112,6 +114,7 @@ class ImageService:
                     raise InvalidImageError()
 
                 rgb_image = self._to_rgb(oriented)
+                processed_width, processed_height = width, height
                 max_dimension = self._settings.image_max_dimension
                 if max(width, height) > max_dimension:
                     ratio = max_dimension / max(width, height)
@@ -120,6 +123,7 @@ class ImageService:
                         max(1, round(height * ratio)),
                     )
                     rgb_image = rgb_image.resize(new_size, Image.Resampling.LANCZOS)
+                    processed_width, processed_height = new_size
 
                 output = BytesIO()
                 rgb_image.save(
@@ -139,6 +143,8 @@ class ImageService:
                 mime_type="image/jpeg",
                 width=width,
                 height=height,
+                processed_width=processed_width,
+                processed_height=processed_height,
                 source_format=source_format,
                 original_size=len(raw),
                 processed_size=len(normalized),

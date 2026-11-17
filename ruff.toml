@@ -1,0 +1,16 @@
+line-length = 100
+
+[lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = [
+    "B008",  # FastAPI Depends/File in argument defaults is intentional
+    "BLE001",  # 区域检测失败时有意降级到人物分析属性
+    "RUF001",  # 中文全角标点
+    "RUF002",
+    "RUF003",
+]
+
+[lint.per-file-ignores]
+"app/prompts/*.py" = ["E501"]
+"app/schemas/edit.py" = ["UP042"]
+"app/ai/base.py" = ["B027"]

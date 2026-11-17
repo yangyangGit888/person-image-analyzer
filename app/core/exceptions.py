@@ -156,3 +156,108 @@ class InternalError(AppError):
     status_code = 500
     default_message = "服务器内部错误"
     default_detail = "服务器处理请求时发生异常"
+
+
+class ResourceNotFoundError(AppError):
+    code = "RESOURCE_NOT_FOUND"
+    status_code = 404
+    default_message = "资源不存在"
+    default_detail = "请求的图片、人物、区域或任务不存在"
+
+
+class EditConflictError(AppError):
+    code = "EDIT_CONFLICT"
+    status_code = 409
+    default_message = "编辑方案冲突"
+    default_detail = "当前编辑操作与已有状态冲突"
+
+
+class EditValidationError(AppError):
+    code = "EDIT_VALIDATION_ERROR"
+    status_code = 422
+    default_message = "编辑参数不合法"
+    default_detail = "编辑部位、操作或选项不合法"
+
+
+class StorageError(AppError):
+    code = "STORAGE_ERROR"
+    status_code = 500
+    default_message = "存储服务异常"
+    default_detail = "无法保存或读取图片与 Mask"
+
+
+class SegmentationUnavailableError(AppError):
+    code = "SEGMENTATION_UNAVAILABLE"
+    status_code = 503
+    default_message = "分割服务不可用"
+    default_detail = "本地分割模型未安装或未正确配置"
+
+
+class SegmentationError(AppError):
+    code = "SEGMENTATION_ERROR"
+    status_code = 502
+    default_message = "图像分割失败"
+    default_detail = "无法从图片中分割出有效区域"
+
+
+class MaskGenerationError(AppError):
+    code = "MASK_GENERATION_ERROR"
+    status_code = 422
+    default_message = "Mask 生成失败"
+    default_detail = "无法为该部位生成有效的编辑 Mask"
+
+
+class RegionDetectionError(AppError):
+    code = "REGION_DETECTION_ERROR"
+    status_code = 502
+    default_message = "部位识别失败"
+    default_detail = "模型未能返回可用的部位定位结果"
+
+
+class ImageEditConfigError(AppError):
+    code = "IMAGE_EDIT_CONFIG_ERROR"
+    status_code = 503
+    default_message = "图像编辑配置错误"
+    default_detail = "未配置 DASHSCOPE_API_KEY 或万相服务参数"
+
+
+class ImageEditAuthError(AppError):
+    code = "IMAGE_EDIT_AUTH_ERROR"
+    status_code = 502
+    default_message = "图像编辑失败"
+    default_detail = "万相服务鉴权失败，请检查 DASHSCOPE_API_KEY 与地域"
+
+
+class ImageEditTimeoutError(AppError):
+    code = "IMAGE_EDIT_TIMEOUT"
+    status_code = 504
+    default_message = "图像编辑超时"
+    default_detail = "万相编辑任务在规定时间内未完成"
+
+
+class ImageEditFailedError(AppError):
+    code = "IMAGE_EDIT_FAILED"
+    status_code = 502
+    default_message = "图像编辑失败"
+    default_detail = "万相图像编辑任务执行失败"
+
+
+class ImageEditContentRejectedError(AppError):
+    code = "IMAGE_EDIT_CONTENT_REJECTED"
+    status_code = 422
+    default_message = "图像编辑被拒绝"
+    default_detail = "图片或编辑指令未通过内容安全审核"
+
+
+class ImageEditInvalidOutputError(AppError):
+    code = "IMAGE_EDIT_INVALID_OUTPUT"
+    status_code = 502
+    default_message = "图像编辑结果无效"
+    default_detail = "万相返回的图片无法解析或尺寸不合法"
+
+
+class ImageEditRateLimitError(AppError):
+    code = "IMAGE_EDIT_RATE_LIMITED"
+    status_code = 503
+    default_message = "图像编辑请求过于频繁"
+    default_detail = "万相服务限流，请稍后重试"

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import contextlib
 import logging
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
@@ -208,16 +209,18 @@ class OpenAICompatibleVisionProvider(BaseVisionProvider):
             if response.status_code == 200:
                 return self._parse_response(response)
 
-            if response.status_code in {408, 429, 500, 502, 503, 504}:
-                if attempt < total_attempts - 1:
-                    logger.warning(
-                        "模型请求失败，准备重试: status=%s attempt=%s/%s",
-                        response.status_code,
-                        attempt + 1,
-                        total_attempts,
-                    )
-                    await self._sleep_before_retry(attempt, response=response)
-                    continue
+            if (
+                response.status_code in {408, 429, 500, 502, 503, 504}
+                and attempt < total_attempts - 1
+            ):
+                logger.warning(
+                    "模型请求失败，准备重试: status=%s attempt=%s/%s",
+                    response.status_code,
+                    attempt + 1,
+                    total_attempts,
+                )
+                await self._sleep_before_retry(attempt, response=response)
+                continue
 
             self._raise_for_status(response)
 
@@ -233,10 +236,8 @@ class OpenAICompatibleVisionProvider(BaseVisionProvider):
         if response is not None:
             retry_after = response.headers.get("retry-after")
             if retry_after:
-                try:
+                with contextlib.suppress(ValueError):
                     delay = min(float(retry_after), 10.0)
-                except ValueError:
-                    pass
         if delay > 0:
             await asyncio.sleep(delay)
 

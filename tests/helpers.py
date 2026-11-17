@@ -223,3 +223,92 @@ class FakeProvider(BaseVisionProvider):
 
     async def aclose(self) -> None:
         return None
+
+
+def edit_region_result(
+    *,
+    hat_existing: bool = False,
+    glasses_existing: bool = False,
+) -> dict[str, Any]:
+    def region(existence: str, bbox: dict[str, float] | None) -> dict[str, Any]:
+        return {
+            "existence": existence,
+            "bbox": bbox,
+            "confidence": 0.88,
+            "type": "unknown",
+            "color": "unknown",
+        }
+
+    return {
+        "persons": [
+            {
+                "person_index": 1,
+                "regions": {
+                    "hat": region(
+                        "existing" if hat_existing else "missing",
+                        (
+                            {"x": 0.38, "y": 0.10, "width": 0.2, "height": 0.1}
+                            if hat_existing
+                            else None
+                        ),
+                    ),
+                    "glasses": region(
+                        "existing" if glasses_existing else "missing",
+                        (
+                            {"x": 0.4, "y": 0.2, "width": 0.18, "height": 0.08}
+                            if glasses_existing
+                            else None
+                        ),
+                    ),
+                    "hair": region(
+                        "existing",
+                        {"x": 0.36, "y": 0.12, "width": 0.23, "height": 0.18},
+                    ),
+                    "earring": region("missing", None),
+                    "top": region(
+                        "existing",
+                        {"x": 0.35, "y": 0.3, "width": 0.28, "height": 0.25},
+                    ),
+                    "pants": region(
+                        "existing",
+                        {"x": 0.38, "y": 0.55, "width": 0.22, "height": 0.3},
+                    ),
+                    "shoes": region("missing", None),
+                },
+            }
+        ]
+    }
+
+
+class RoutingFakeProvider(BaseVisionProvider):
+    """根据 Prompt 返回人物分析或编辑区域分析结果。"""
+
+    provider_name = "deepseek"
+    model = "deepseek-flash"
+    base_url = "https://api.deepseek.com"
+    supports_vision = True
+
+    def __init__(
+        self,
+        *,
+        person_result: dict[str, Any] | None = None,
+        region_result: dict[str, Any] | None = None,
+    ) -> None:
+        self.person_result = person_result or single_person_result()
+        self.region_result = region_result or edit_region_result()
+
+    async def analyze_image(
+        self,
+        image: ImageInput,
+        prompt: str,
+        *,
+        system_prompt: str | None = None,
+    ) -> ModelResult:
+        is_region = "可编辑部位" in (system_prompt or "")
+        parsed = self.region_result if is_region else self.person_result
+        return ModelResult(
+            content=json.dumps(parsed, ensure_ascii=False),
+            parsed=copy.deepcopy(parsed),
+            model=self.model,
+            provider=self.provider_name,
+        )

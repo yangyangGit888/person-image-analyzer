@@ -1,0 +1,9 @@
+# 可选：本地 SAM2 分割依赖。
+# 建议在 Python 3.11/3.12 或已确认兼容的 Python 3.15 环境安装。
+-r requirements.txt
+numpy>=1.26.0,<3.0.0
+torch>=2.5.1
+torchvision>=0.20.1
+
+# SAM2 官方包需要从 GitHub 安装（不会随 requirements.txt 自动安装）：
+# SAM2_BUILD_CUDA=0 pip install "git+https://github.com/facebookresearch/sam2.git"

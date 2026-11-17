@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends
 
@@ -28,5 +28,5 @@ async def health_check(
         service=settings.app_name,
         version=settings.app_version,
         ai_configured=settings.api_key_configured,
-        timestamp=datetime.now(timezone.utc),
+        timestamp=datetime.now(UTC),
     )
