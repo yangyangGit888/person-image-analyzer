@@ -8,6 +8,7 @@
 - 当前分支：`person-image-analyzer-pro1.0`
 - Phase 3 提交：`c5b3752 feat: complete phase 3 image and video analysis pipeline`
 - Phase 3.1 状态文档提交：`05f0532 docs: add project status and phase 3 handoff`
+- Phase 5 评估工具与基线提交：`ffe339b feat: add image quality evaluation harness and baseline report`
 - 上一回滚点：`34ad24f feat: add person image attribute analysis backend`
 
 ## 已实现功能
