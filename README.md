@@ -467,7 +467,7 @@ ruff check app tests scripts
 
 报告：`evaluation/reports/latest.md`
 
-原始图片、人工标注和预测 JSONL 默认不提交 Git；评估代码和汇总报告提交。Phase 6 第一次 Prompt 实验未通过回归，已回退，详见 `evaluation/reports/README.md`。
+原始图片、人工标注和预测 JSONL 默认不提交 Git；评估代码和汇总报告提交。Phase 6 第一次 Prompt 实验未通过回归，已回退；关闭 Thinking 的实验虽然降低约 72% Token，但失败率 29.4%，也未采纳。详见 `evaluation/reports/README.md`。
 
 ## 12. 阶段计划
 

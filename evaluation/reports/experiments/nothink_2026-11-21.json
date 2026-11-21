@@ -1,0 +1,935 @@
+{
+  "samples": 17,
+  "errors": 5,
+  "macro_precision": 0.8,
+  "macro_recall": 0.7424242424242424,
+  "macro_f1": 0.8383838383838383,
+  "targets": {
+    "lower_garment": {
+      "target": "lower_garment",
+      "total": 12,
+      "gt_positive": 11,
+      "predicted_positive": 7,
+      "tp": 7,
+      "fp": 0,
+      "fn": 4,
+      "precision": 1.0,
+      "recall": 0.6363636363636364,
+      "f1": 0.7777777777777778,
+      "abstention_rate": 0.0,
+      "not_visible_rate": 0.0,
+      "visibility_accuracy": 0.5833333333333334
+    },
+    "pantyhose": {
+      "target": "pantyhose",
+      "total": 12,
+      "gt_positive": 0,
+      "predicted_positive": 1,
+      "tp": 0,
+      "fp": 1,
+      "fn": 0,
+      "precision": 0.0,
+      "recall": null,
+      "f1": null,
+      "abstention_rate": 0.08333333333333333,
+      "not_visible_rate": 0.0,
+      "visibility_accuracy": 0.6666666666666666
+    },
+    "ordinary_socks": {
+      "target": "ordinary_socks",
+      "total": 12,
+      "gt_positive": 6,
+      "predicted_positive": 5,
+      "tp": 5,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.8333333333333334,
+      "f1": 0.9090909090909091,
+      "abstention_rate": 0.08333333333333333,
+      "not_visible_rate": 0.16666666666666666,
+      "visibility_accuracy": 0.6666666666666666
+    },
+    "footwear": {
+      "target": "footwear",
+      "total": 12,
+      "gt_positive": 6,
+      "predicted_positive": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 3,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666,
+      "abstention_rate": 0.08333333333333333,
+      "not_visible_rate": 0.16666666666666666,
+      "visibility_accuracy": 0.3333333333333333
+    },
+    "bare_feet": {
+      "target": "bare_feet",
+      "total": 12,
+      "gt_positive": 3,
+      "predicted_positive": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "abstention_rate": 0.0,
+      "not_visible_rate": 0.08333333333333333,
+      "visibility_accuracy": 0.5833333333333334
+    }
+  },
+  "category_accuracy": {
+    "lower_garment": 0.36363636363636365,
+    "ordinary_socks_type": 0.5,
+    "footwear_type": 0.3333333333333333,
+    "footwear_group": 0.3333333333333333
+  },
+  "side_accuracy": null,
+  "side_abstention_rate": 1.0,
+  "samples_detail": [
+    {
+      "sample_id": "img_002",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "partial",
+          "gt_category": "pants",
+          "pred_category": "pants",
+          "gt_type": "shorts",
+          "pred_type": "shorts",
+          "gt_side": null,
+          "pred_sides": [
+            "not_applicable"
+          ]
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "ankle",
+          "pred_type": "crew",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown",
+            "unknown"
+          ]
+        },
+        "footwear": {
+          "gt_presence": "not_visible",
+          "pred_presence": "not_detected",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "clear",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_003",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "skirt",
+          "pred_category": "skirt",
+          "gt_type": "unknown",
+          "pred_type": "mini_skirt",
+          "gt_side": null,
+          "pred_sides": [
+            "not_applicable"
+          ]
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "crew",
+          "pred_type": "ankle",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown",
+            "unknown"
+          ]
+        },
+        "footwear": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "sneakers",
+          "pred_category": "sneakers",
+          "gt_type": "sneakers",
+          "pred_type": "sneakers",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown",
+            "unknown"
+          ]
+        },
+        "bare_feet": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_004",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "unknown",
+          "gt_visibility": "partial",
+          "pred_visibility": "not_visible",
+          "gt_category": "pants",
+          "pred_category": "unknown",
+          "gt_type": "shorts",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "detected",
+          "pred_presence": "not_visible",
+          "gt_visibility": "clear",
+          "pred_visibility": "not_visible",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "crew",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "footwear": {
+          "gt_presence": "detected",
+          "pred_presence": "not_visible",
+          "gt_visibility": "clear",
+          "pred_visibility": "not_visible",
+          "gt_category": "slippers",
+          "pred_category": "unknown",
+          "gt_type": "slippers",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_visible",
+          "gt_visibility": "clear",
+          "pred_visibility": "not_visible",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_005",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "partial",
+          "gt_category": "pants",
+          "pred_category": "one_piece",
+          "gt_type": "shorts",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": [
+            "not_applicable"
+          ]
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "crew",
+          "pred_type": "crew",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown"
+          ]
+        },
+        "footwear": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "slippers",
+          "pred_category": "slippers",
+          "gt_type": "slippers",
+          "pred_type": "slippers",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown"
+          ]
+        },
+        "bare_feet": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_006",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "partial",
+          "gt_category": "one_piece",
+          "pred_category": "skirt",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": [
+            "not_applicable"
+          ]
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "no_show",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "footwear": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "bare",
+          "pred_category": "bare",
+          "gt_type": "bare",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_007",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "not_visible",
+          "pred_presence": "unknown",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "not_visible",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "ankle",
+          "pred_type": "ankle",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown",
+            "unknown"
+          ]
+        },
+        "footwear": {
+          "gt_presence": "not_visible",
+          "pred_presence": "not_detected",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "clear",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_008",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "unknown",
+          "gt_visibility": "partial",
+          "pred_visibility": "not_visible",
+          "gt_category": "pants",
+          "pred_category": "unknown",
+          "gt_type": "shorts",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_visible",
+          "gt_visibility": "clear",
+          "pred_visibility": "not_visible",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "no_show",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "footwear": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_visible",
+          "gt_visibility": "clear",
+          "pred_visibility": "not_visible",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "bare",
+          "pred_category": "bare",
+          "gt_type": "bare",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_009",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "pants",
+          "pred_category": "pants",
+          "gt_type": "shorts",
+          "pred_type": "hot_pants",
+          "gt_side": null,
+          "pred_sides": [
+            "not_applicable"
+          ]
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "partial",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown",
+            "unknown"
+          ]
+        },
+        "ordinary_socks": {
+          "gt_presence": "not_visible",
+          "pred_presence": "uncertain",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "partial",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "footwear": {
+          "gt_presence": "detected",
+          "pred_presence": "uncertain",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "heels",
+          "pred_category": "unknown",
+          "gt_type": "heels",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "not_visible",
+          "pred_presence": "unknown",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "partial",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_010",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "clear",
+          "gt_category": "pants",
+          "pred_category": "pants",
+          "gt_type": "shorts",
+          "pred_type": "shorts",
+          "gt_side": null,
+          "pred_sides": [
+            "not_applicable"
+          ]
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "no_show",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "footwear": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "bare",
+          "pred_category": "bare",
+          "gt_type": "bare",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_011",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "unknown",
+          "gt_visibility": "partial",
+          "pred_visibility": "not_visible",
+          "gt_category": "pants",
+          "pred_category": "unknown",
+          "gt_type": "shorts",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "uncertain",
+          "gt_visibility": "clear",
+          "pred_visibility": "partial",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "not_visible",
+          "pred_presence": "not_detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "partial",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "footwear": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "slippers",
+          "pred_category": "slippers",
+          "gt_type": "clogs",
+          "pred_type": "slippers",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown",
+            "unknown"
+          ]
+        },
+        "bare_feet": {
+          "gt_presence": "not_visible",
+          "pred_presence": "not_detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "partial",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_014",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "unknown",
+          "gt_visibility": "partial",
+          "pred_visibility": "not_visible",
+          "gt_category": "skirt",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "pantyhose": {
+          "gt_presence": "not_visible",
+          "pred_presence": "unknown",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "not_visible",
+          "gt_category": "pantyhose",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "not_visible",
+          "pred_presence": "unknown",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "not_visible",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "footwear": {
+          "gt_presence": "detected",
+          "pred_presence": "unknown",
+          "gt_visibility": "partial",
+          "pred_visibility": "not_visible",
+          "gt_category": "sneakers",
+          "pred_category": "unknown",
+          "gt_type": "sneakers",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "not_visible",
+          "pred_presence": "unknown",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "not_visible",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    },
+    {
+      "sample_id": "img_017",
+      "targets": {
+        "lower_garment": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "partial",
+          "pred_visibility": "partial",
+          "gt_category": "pants",
+          "pred_category": "skirt",
+          "gt_type": "shorts",
+          "pred_type": "pleated_skirt",
+          "gt_side": null,
+          "pred_sides": [
+            "not_applicable"
+          ]
+        },
+        "pantyhose": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "pantyhose",
+          "pred_category": "hosiery",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "ordinary_socks": {
+          "gt_presence": "detected",
+          "pred_presence": "detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "ordinary_socks",
+          "pred_category": "ordinary_socks",
+          "gt_type": "crew",
+          "pred_type": "crew",
+          "gt_side": null,
+          "pred_sides": [
+            "unknown",
+            "unknown"
+          ]
+        },
+        "footwear": {
+          "gt_presence": "not_visible",
+          "pred_presence": "not_detected",
+          "gt_visibility": "not_visible",
+          "pred_visibility": "clear",
+          "gt_category": "unknown",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        },
+        "bare_feet": {
+          "gt_presence": "not_detected",
+          "pred_presence": "not_detected",
+          "gt_visibility": "clear",
+          "pred_visibility": "clear",
+          "gt_category": "bare",
+          "pred_category": "unknown",
+          "gt_type": "unknown",
+          "pred_type": "unknown",
+          "gt_side": null,
+          "pred_sides": []
+        }
+      }
+    }
+  ],
+  "error_rows": [
+    {
+      "sample_id": "img_001",
+      "error": "概览结果缺少 lower_body、body_observability 或 person_orientation"
+    },
+    {
+      "sample_id": "img_012",
+      "error": "模型返回内容不是合法 json"
+    },
+    {
+      "sample_id": "img_013",
+      "error": "模型返回内容不是合法 json"
+    },
+    {
+      "sample_id": "img_015",
+      "error": "模型返回内容不是合法 json"
+    },
+    {
+      "sample_id": "img_016",
+      "error": "模型返回内容不是合法 json"
+    }
+  ]
+}
