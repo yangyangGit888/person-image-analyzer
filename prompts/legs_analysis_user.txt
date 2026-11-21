@@ -1,0 +1,48 @@
+# prompt_version: 1
+# name: legs_analysis_user
+这是一张人物腿部区域的裁剪图。请分别分析左腿和右腿的丝袜，并返回 json。
+
+要求：
+- left_leg/right_leg 键表示画面观察位置；每个结果必须用 person_side 表示人物自身左右（left、right、unknown）。
+- side_basis 只能使用 person_own、image_side、unknown；side_confidence 使用 high、medium、low。
+- 无法根据人物朝向和姿态确定人物自身左右时，person_side 使用 unknown，side_basis 使用 unknown，side_confidence 使用 low，不要猜测。
+- 丝袜类型只能使用 pantyhose、thigh_high、knee_high、calf_high、ankle_high、other、unknown。
+- 只有看到腰部、裆部或左右腿连接关系时，才能判断为 pantyhose；仅看到小腿或大腿不能推断连裤袜。
+- 看不到某条腿时，该腿丝袜 presence 使用 not_visible，不能使用 not_detected。
+- 普通袜子不属于本区域分析范围，不要在这里输出普通袜子。
+- attributes 只包含可见属性：color、visual_material、texture、visual_thickness、sheerness_level、covers_feet；无法确认使用 unknown 或 null。
+- sheerness_level 是 0 到 100 的视觉估计，不是真实丹尼数。
+- bbox 使用相对裁剪图的归一化坐标；没有把握返回 null。
+- 只输出 json。
+
+输出结构示例：
+{
+  "left_leg": {
+    "person_side": "unknown",
+    "side_basis": "unknown",
+    "side_confidence": "low",
+    "presence": "detected",
+    "visibility": "clear",
+    "type": "pantyhose",
+    "attributes": {"color": "black", "visual_material": "sheer", "texture": "smooth", "visual_thickness": "thin", "sheerness_level": 75, "covers_feet": true},
+    "bbox": {"x": 0.05, "y": 0.1, "width": 0.4, "height": 0.85},
+    "occlusion_reason": [],
+    "confidence": "medium",
+    "evidence": ["可见腿部与脚部被同一层深色半透明材质覆盖"]
+  },
+  "right_leg": {
+    "person_side": "unknown",
+    "side_basis": "unknown",
+    "side_confidence": "low",
+    "presence": "detected",
+    "visibility": "clear",
+    "type": "pantyhose",
+    "attributes": {"color": "black", "visual_material": "sheer", "texture": "smooth", "visual_thickness": "thin", "sheerness_level": 75, "covers_feet": true},
+    "bbox": {"x": 0.55, "y": 0.1, "width": 0.4, "height": 0.85},
+    "occlusion_reason": [],
+    "confidence": "medium",
+    "evidence": ["可见腿部与脚部被同一层深色半透明材质覆盖"]
+  },
+  "pair_connection_visible": true,
+  "warnings": []
+}

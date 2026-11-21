@@ -1,0 +1,31 @@
+# prompt_version: 1
+# name: clothing_detail_user
+这是一张人物下装区域的裁剪图，保留了腰部和腿部上下文。请只分析下装，并返回 json。
+
+要求：
+- category 只能使用 pants、skirt、one_piece、unknown。
+- type 根据 category 选择：
+  - pants: yoga_pants、leggings、jeans、casual_pants、suit_pants、wide_leg_pants、cargo_pants、shorts、hot_pants、other、unknown
+  - skirt: pleated_skirt、jk_skirt、a_line_skirt、pencil_skirt、mini_skirt、midi_skirt、maxi_skirt、denim_skirt、puffy_skirt、lolita_skirt、other、unknown
+  - one_piece: maxi_dress、midi_dress、mini_dress、other、unknown
+- style_tags 和 design_features 使用开放的小写 snake_case 标签。
+- attributes 只包含可见属性：color、length、pattern、visual_material、fit、decorations；无法确认返回 unknown 或 null。
+- 长裙或长裤遮住腿部时，visibility 对下装本身仍可为 clear，但不要据此判断腿部或脚部状态。
+- bbox 使用相对裁剪图的归一化坐标；没有把握返回 null。
+- 只输出 json。
+
+输出结构示例：
+{
+  "category": "skirt",
+  "type": "pleated_skirt",
+  "presence": "detected",
+  "visibility": "clear",
+  "style_tags": ["jk_style"],
+  "design_features": ["pleated", "solid_color"],
+  "attributes": {"color": "navy", "length": "short", "pattern": "solid", "visual_material": "unknown", "fit": "unknown", "decorations": []},
+  "bbox": {"x": 0.1, "y": 0.1, "width": 0.8, "height": 0.85},
+  "occlusion_reason": [],
+  "confidence": "high",
+  "evidence": ["可见百褶裙摆"],
+  "warnings": []
+}

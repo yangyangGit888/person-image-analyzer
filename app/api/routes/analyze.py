@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, File, UploadFile, status
+from fastapi import APIRouter, Depends, File, Request, UploadFile, status
 
-from app.ai.base import ImageInput
-from app.api.deps import get_analysis_service, get_image_service
+from app.api.deps import get_image_analysis_service, get_image_service
 from app.schemas.analysis import AnalyzeResponse, ErrorResponse
-from app.services.analysis_service import AnalysisService
+from app.services.image_analysis_service import ImageAnalysisService
 from app.services.image_service import ImageService
 
 router = APIRouter(prefix="/api/v1", tags=["图片分析"])
@@ -32,29 +31,27 @@ router = APIRouter(prefix="/api/v1", tags=["图片分析"])
     },
 )
 async def analyze_image(
+    request: Request,
     file: UploadFile = File(..., description="待分析的图片文件"),
     image_service: ImageService = Depends(get_image_service),
-    analysis_service: AnalysisService = Depends(get_analysis_service),
+    image_analysis_service: ImageAnalysisService = Depends(get_image_analysis_service),
 ) -> AnalyzeResponse:
     """上传图片并返回结构化人物属性。"""
 
+    request_id = getattr(request.state, "request_id", None)
     try:
         raw = await image_service.read_upload(file)
     finally:
         await file.close()
 
     processed = await image_service.process(raw)
-    image = ImageInput(
-        data=processed.data,
-        mime_type=processed.mime_type,
-        width=processed.width,
-        height=processed.height,
+    outcome = await image_analysis_service.analyze(
+        processed,
         filename=file.filename,
+        request_id=request_id,
     )
-
-    data = await analysis_service.analyze(image)
     return AnalyzeResponse(
         success=True,
         message="分析成功",
-        data=data,
+        data=outcome.data,
     )

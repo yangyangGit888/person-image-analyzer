@@ -57,7 +57,7 @@ class UnsupportedImageFormatError(AppError):
     code = "UNSUPPORTED_IMAGE_FORMAT"
     status_code = 415
     default_message = "图片格式不支持"
-    default_detail = "仅支持 JPG、JPEG、PNG、WEBP、HEIC/HEIF 格式的图片"
+    default_detail = "仅支持 JPG、JPEG、PNG、GIF、WEBP、HEIC/HEIF 格式的图片"
 
 
 class InvalidImageError(AppError):
@@ -156,3 +156,176 @@ class InternalError(AppError):
     status_code = 500
     default_message = "服务器内部错误"
     default_detail = "服务器处理请求时发生异常"
+
+
+# ---------- Prompt / 配置 ----------
+class PromptConfigError(AppError):
+    code = "PROMPT_CONFIG_ERROR"
+    status_code = 500
+    default_message = "Prompt 配置错误"
+    default_detail = "Prompt 文件缺失或格式不正确"
+
+
+# ---------- 存储 / 资源 ----------
+class StorageError(AppError):
+    code = "STORAGE_ERROR"
+    status_code = 500
+    default_message = "本地存储失败"
+    default_detail = "无法读写本地存储目录"
+
+
+class ResourceNotFoundError(AppError):
+    code = "RESOURCE_NOT_FOUND"
+    status_code = 404
+    default_message = "资源不存在"
+    default_detail = "请求的资源不存在或已被清理"
+
+
+class AnalysisNotFoundError(ResourceNotFoundError):
+    default_detail = "分析记录不存在或已过期"
+
+
+class ItemNotFoundError(ResourceNotFoundError):
+    default_detail = "物品不存在或不属于当前分析结果"
+
+
+class TaskNotFoundError(ResourceNotFoundError):
+    default_detail = "视频任务不存在"
+
+
+# ---------- 图片 / 坐标 ----------
+class ImageNotAvailableError(AppError):
+    code = "IMAGE_NOT_AVAILABLE"
+    status_code = 410
+    default_message = "原图不可用"
+    default_detail = "原图未保存或已超过保留期限"
+
+
+class InvalidBBoxError(AppError):
+    code = "INVALID_BBOX"
+    status_code = 422
+    default_message = "坐标无效"
+    default_detail = "Bounding Box 缺失或超出图片边界"
+
+
+# ---------- 视频 ----------
+class InvalidVideoError(AppError):
+    code = "INVALID_VIDEO"
+    status_code = 400
+    default_message = "视频文件无效"
+    default_detail = "视频文件损坏或无法解析"
+
+
+class UnsupportedVideoFormatError(AppError):
+    code = "UNSUPPORTED_VIDEO_FORMAT"
+    status_code = 415
+    default_message = "视频格式不支持"
+    default_detail = "仅支持常见容器格式的 H.264/H.265/VP9/AV1 视频"
+
+
+class VideoTooLargeError(AppError):
+    code = "VIDEO_TOO_LARGE"
+    status_code = 413
+    default_message = "视频过大"
+    default_detail = "视频文件超过大小限制"
+
+
+class VideoTooLongError(AppError):
+    code = "VIDEO_TOO_LONG"
+    status_code = 422
+    default_message = "视频过长"
+    default_detail = "视频时长超过限制"
+
+
+class VideoResolutionError(AppError):
+    code = "VIDEO_RESOLUTION_INVALID"
+    status_code = 422
+    default_message = "视频分辨率不支持"
+    default_detail = "视频分辨率超出允许范围"
+
+
+class VideoDecodeError(AppError):
+    code = "VIDEO_DECODE_FAILED"
+    status_code = 422
+    default_message = "视频解码失败"
+    default_detail = "无法从视频中解码出有效画面"
+
+
+class FrameExtractionError(AppError):
+    code = "FRAME_EXTRACTION_FAILED"
+    status_code = 500
+    default_message = "抽帧失败"
+    default_detail = "无法从视频中提取候选帧"
+
+
+class NoValidFramesError(AppError):
+    code = "NO_VALID_FRAMES"
+    status_code = 422
+    default_message = "没有有效画面"
+    default_detail = "视频中没有清晰可用的画面"
+
+
+class UnsupportedMultiPersonError(AppError):
+    code = "UNSUPPORTED_MULTI_PERSON"
+    status_code = 422
+    default_message = "不支持多人视频"
+    default_detail = "当前版本仅支持单人短视频"
+
+
+# ---------- 任务 ----------
+class TaskNotCompletedError(AppError):
+    code = "TASK_NOT_COMPLETED"
+    status_code = 409
+    default_message = "任务尚未完成"
+    default_detail = "视频任务仍在处理中，请稍后查询"
+
+
+class TaskCancelledError(AppError):
+    code = "TASK_CANCELLED"
+    status_code = 409
+    default_message = "任务已取消"
+    default_detail = "视频任务已被取消"
+
+
+class TaskTimeoutError(AppError):
+    code = "TASK_TIMEOUT"
+    status_code = 504
+    default_message = "任务超时"
+    default_detail = "视频任务处理超时"
+
+
+class TaskFailedError(AppError):
+    code = "TASK_FAILED"
+    status_code = 409
+    default_message = "任务失败"
+    default_detail = "视频任务处理失败，请查看任务错误信息"
+
+
+# ---------- Mask ----------
+class ItemHasNoGeometryError(AppError):
+    code = "ITEM_HAS_NO_GEOMETRY"
+    status_code = 422
+    default_message = "物品缺少定位信息"
+    default_detail = "该物品没有可靠的 Bounding Box，无法生成 Mask"
+
+
+class MaskProviderUnavailableError(AppError):
+    code = "MASK_PROVIDER_UNAVAILABLE"
+    status_code = 503
+    default_message = "Mask 能力不可用"
+    default_detail = "当前未配置可用的 Mask 生成能力"
+
+
+class MaskGenerationError(AppError):
+    code = "MASK_GENERATION_FAILED"
+    status_code = 500
+    default_message = "Mask 生成失败"
+    default_detail = "生成物品 Mask 时发生异常"
+
+
+# ---------- 内容安全 ----------
+class AIContentRefusedError(AppError):
+    code = "AI_CONTENT_REFUSED"
+    status_code = 422
+    default_message = "模型拒绝处理"
+    default_detail = "模型因内容安全策略拒绝处理该图片"

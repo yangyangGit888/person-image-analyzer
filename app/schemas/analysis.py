@@ -6,9 +6,24 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from datetime import datetime
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+
+from app.schemas.analysis_v2 import (
+    AnalysisStatus,
+    AnalysisWarning,
+    BodyObservability,
+    ClothingItem,
+    ConfidenceLevel,
+    Evidence,
+    FootState,
+    PersonOrientation,
+    SideBasis,
+    SourceType,
+    WearingRelation,
+)
 
 TriState = Literal["true", "false", "unknown"]
 
@@ -109,8 +124,33 @@ class ImageInfo(SchemaBase):
 
 
 class AnalysisData(SchemaBase):
+    """图片分析数据。
+
+    ``image_info`` / ``persons`` 为旧接口兼容字段；V2 字段采用追加方式，
+    不影响旧客户端。
+    """
+
     image_info: ImageInfo
     persons: list[PersonAnalysis]
+
+    schema_version: int = 2
+    analysis_id: str | None = None
+    person_count: int | None = None
+    source_type: SourceType | None = None
+    status: AnalysisStatus | None = None
+    person_orientation: PersonOrientation | None = None
+    side_basis: SideBasis | None = None
+    side_assignment_confidence: ConfidenceLevel | None = None
+    items: list[ClothingItem] = Field(default_factory=list)
+    body_observability: BodyObservability | None = None
+    feet: list[FootState] = Field(default_factory=list)
+    wearing_relations: list[WearingRelation] = Field(default_factory=list)
+    evidence: list[Evidence] = Field(default_factory=list)
+    warnings: list[AnalysisWarning] = Field(default_factory=list)
+    created_at: datetime | None = None
+    prompt_versions: dict[str, str] = Field(default_factory=dict)
+    model: str | None = None
+    usage: dict[str, int] = Field(default_factory=dict)
 
 
 class AnalyzeResponse(SchemaBase):
@@ -122,9 +162,11 @@ class AnalyzeResponse(SchemaBase):
 class ErrorDetail(SchemaBase):
     code: str
     detail: str
+    details: list[dict[str, Any]] | None = None
 
 
 class ErrorResponse(SchemaBase):
     success: Literal[False] = False
     message: str
     error: ErrorDetail
+    request_id: str | None = None

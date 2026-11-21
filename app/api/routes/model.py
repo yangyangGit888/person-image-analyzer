@@ -5,7 +5,8 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends
 
 from app.ai.base import BaseVisionProvider
-from app.api.deps import get_app_settings, get_vision_provider
+from app.ai.prompt_manager import PromptManager
+from app.api.deps import get_app_settings, get_prompt_manager, get_vision_provider
 from app.core.config import Settings
 from app.schemas.system import ModelInfo, ModelInfoResponse
 
@@ -21,8 +22,16 @@ router = APIRouter(prefix="/api/v1", tags=["模型配置"])
 async def model_info(
     settings: Settings = Depends(get_app_settings),
     provider: BaseVisionProvider = Depends(get_vision_provider),
+    prompt_manager: PromptManager = Depends(get_prompt_manager),
 ) -> ModelInfoResponse:
     """返回当前模型配置，敏感信息一律隐藏。"""
+
+    if not settings.api_key_configured:
+        service_status = "unconfigured"
+    elif not provider.supports_vision:
+        service_status = "unsupported_vision"
+    else:
+        service_status = "configured"
 
     return ModelInfoResponse(
         success=True,
@@ -35,5 +44,8 @@ async def model_info(
             api_key_configured=settings.api_key_configured,
             timeout_seconds=settings.ai_timeout,
             max_retries=settings.ai_max_retries,
+            max_image_bytes=settings.max_upload_size_bytes,
+            prompt_versions=prompt_manager.list_versions(),
+            service_status=service_status,
         ),
     )

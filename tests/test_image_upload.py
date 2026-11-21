@@ -67,10 +67,22 @@ def test_heic_content_with_png_extension(client: TestClient) -> None:
     assert response.json()["success"] is True
 
 
-def test_reject_unsupported_format(client: TestClient) -> None:
+def test_accept_gif_first_frame(client: TestClient) -> None:
     response = client.post(
         "/api/v1/analyze",
         files={"file": ("animation.gif", make_image_bytes("GIF"), "image/gif")},
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["success"] is True
+    assert body["data"]["image_info"]["width"] == 640
+
+
+def test_reject_unsupported_format(client: TestClient) -> None:
+    response = client.post(
+        "/api/v1/analyze",
+        files={"file": ("bitmap.bmp", make_image_bytes("BMP"), "image/bmp")},
     )
 
     assert response.status_code == 415

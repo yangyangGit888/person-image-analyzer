@@ -1,0 +1,51 @@
+# prompt_version: 1
+# name: image_overview_user
+请对这张图片做人物与下装的全图概览，并返回 json。
+
+图片尺寸：宽 __IMAGE_WIDTH__ 像素，高 __IMAGE_HEIGHT__ 像素。
+
+要求：
+- person_count 是画面中可辨认的真实人物数量。
+- person_orientation 只能使用 front、back、left_profile、right_profile、three_quarter、unknown。
+- person_pose 使用简短英文或中文描述，例如 standing、walking、sitting、crossed_legs、upper_body_only、unknown。
+- side_basis 只能使用 person_own、image_side、unknown；side_assignment_confidence 使用 high、medium、low。
+- 只有能根据人物朝向、身体结构和姿态确定人物自身左右时，side_basis 才能为 person_own；否则使用 unknown。
+- lower_body 只描述下装类别、款式、风格标签、设计特征、可见属性和大致位置。
+- body_observability 分别描述 lower_body、left_leg、right_leg、left_foot、right_foot 的 visibility、occlusion_reason、bbox。
+- visibility 只能使用 clear、partial、occluded、not_visible。
+- occlusion_reason 使用 long_skirt、long_pants、other_clothing、object_occlusion、body_pose、out_of_frame、low_resolution、poor_lighting、unknown。
+- 看不清脚部时 left_foot/right_foot 必须是 not_visible 或 occluded，不能因为没看到袜子/鞋子就推断未穿。
+- style_tags 和 design_features 使用开放标签，使用小写 snake_case；没有则返回空数组。
+- attributes 只包含可见属性，例如 color、length、pattern、visual_material、fit、decorations；无法确认的字段使用 unknown 或 null。
+- 没有把握的 bbox 返回 null，不要编造坐标。
+- 只输出 json。
+
+输出结构示例：
+{
+  "person_count": 1,
+  "person_orientation": "front",
+  "person_pose": "standing",
+  "person_bbox": {"x": 0.3, "y": 0.08, "width": 0.4, "height": 0.88},
+  "side_basis": "person_own",
+  "side_assignment_confidence": "high",
+  "lower_body": {
+    "category": "skirt",
+    "type": "maxi_skirt",
+    "presence": "detected",
+    "visibility": "clear",
+    "style_tags": ["elegant"],
+    "design_features": ["pleated"],
+    "attributes": {"color": "black", "length": "long", "pattern": "solid", "visual_material": "unknown"},
+    "bbox": {"x": 0.32, "y": 0.48, "width": 0.35, "height": 0.45},
+    "occlusion_reason": [],
+    "confidence": "high"
+  },
+  "body_observability": {
+    "lower_body": {"visibility": "clear", "occlusion_reason": [], "bbox": {"x": 0.32, "y": 0.48, "width": 0.35, "height": 0.45}},
+    "left_leg": {"visibility": "not_visible", "occlusion_reason": ["long_skirt"], "bbox": null},
+    "right_leg": {"visibility": "not_visible", "occlusion_reason": ["long_skirt"], "bbox": null},
+    "left_foot": {"visibility": "not_visible", "occlusion_reason": ["long_skirt"], "bbox": null},
+    "right_foot": {"visibility": "not_visible", "occlusion_reason": ["long_skirt"], "bbox": null}
+  },
+  "warnings": []
+}

@@ -21,12 +21,9 @@ from app.ai.openai_compatible import OpenAICompatibleVisionProvider
 from app.core.config import Settings
 from app.core.exceptions import AIModelNotSupportVisionError
 
-DEEPSEEK_VISION_MODELS = frozenset(
-    {
-        "deepseek-flash",
-        "deepseek-v4-flash-vision-exp",
-    }
-)
+# 只保留当前官方稳定视觉模型名称；已下线的实验模型不写死在代码中。
+# 如官方模型名称变更，通过 AI_MODEL / AI_MODEL_SUPPORTS_VISION 配置切换。
+DEEPSEEK_VISION_MODELS = frozenset({"deepseek-flash"})
 
 
 class DeepSeekProvider(OpenAICompatibleVisionProvider):

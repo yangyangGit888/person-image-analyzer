@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass
 from io import BytesIO
 
@@ -28,13 +29,17 @@ from app.core.exceptions import (
 
 register_heif_opener()
 
-ALLOWED_FORMATS = frozenset({"JPEG", "PNG", "WEBP", "HEIF", "HEIC"})
+ALLOWED_FORMATS = frozenset({"JPEG", "PNG", "GIF", "WEBP", "HEIF", "HEIC"})
 _CHUNK_SIZE = 1024 * 1024
 
 
 @dataclass(frozen=True, slots=True)
 class ProcessedImage:
-    """归一化后的图片与原始信息。"""
+    """归一化后的图片与原始信息。
+
+    ``width`` / ``height`` 为兼容旧代码的源图尺寸；模型实际看到的是
+    ``processed_width`` / ``processed_height``，坐标映射必须使用后者。
+    """
 
     data: bytes
     mime_type: str
@@ -43,6 +48,15 @@ class ProcessedImage:
     source_format: str
     original_size: int
     processed_size: int
+    source_width: int
+    source_height: int
+    processed_width: int
+    processed_height: int
+    scale_x: float
+    scale_y: float
+    sha256: str
+    is_animated: bool = False
+    frames_used: int = 1
 
 
 class ImageService:
@@ -101,10 +115,13 @@ class ImageService:
                     raise ImageTooLargeError(
                         detail="图片分辨率过大，请压缩后重试",
                     )
+                is_animated = bool(getattr(probe, "is_animated", False))
                 probe.verify()
 
             with Image.open(BytesIO(raw)) as source:
                 source.load()
+                if source_format == "GIF":
+                    source.seek(0)
                 oriented = ImageOps.exif_transpose(source)
                 oriented.load()
                 width, height = oriented.size
@@ -112,14 +129,16 @@ class ImageService:
                     raise InvalidImageError()
 
                 rgb_image = self._to_rgb(oriented)
+                processed_width, processed_height = width, height
                 max_dimension = self._settings.image_max_dimension
                 if max(width, height) > max_dimension:
                     ratio = max_dimension / max(width, height)
-                    new_size = (
-                        max(1, round(width * ratio)),
-                        max(1, round(height * ratio)),
+                    processed_width = max(1, round(width * ratio))
+                    processed_height = max(1, round(height * ratio))
+                    rgb_image = rgb_image.resize(
+                        (processed_width, processed_height),
+                        Image.Resampling.LANCZOS,
                     )
-                    rgb_image = rgb_image.resize(new_size, Image.Resampling.LANCZOS)
 
                 output = BytesIO()
                 rgb_image.save(
@@ -142,6 +161,15 @@ class ImageService:
                 source_format=source_format,
                 original_size=len(raw),
                 processed_size=len(normalized),
+                source_width=width,
+                source_height=height,
+                processed_width=processed_width,
+                processed_height=processed_height,
+                scale_x=processed_width / width,
+                scale_y=processed_height / height,
+                sha256=hashlib.sha256(raw).hexdigest(),
+                is_animated=is_animated,
+                frames_used=1,
             )
         except AppError:
             raise

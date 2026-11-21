@@ -1,0 +1,67 @@
+# prompt_version: 1
+# name: feet_analysis_user
+这是一张人物脚部区域的裁剪图，尽量保留了脚踝和小腿上下文。请分别分析左右脚的普通袜子、鞋子和赤脚状态，并返回 json。
+
+要求：
+- left_foot/right_foot 键表示画面观察位置；每个结果必须用 person_side 表示人物自身左右（left、right、unknown）。
+- side_basis 只能使用 person_own、image_side、unknown；side_confidence 使用 high、medium、low。
+- 无法根据人物朝向和姿态确定人物自身左右时，person_side 使用 unknown，side_basis 使用 unknown，side_confidence 使用 low，不要猜测。
+- 镜面自拍、侧面、交叉腿或裁剪缺少人物上下文时，应优先返回 unknown。
+- 普通袜子类型只能使用 no_show、ankle、crew、knee_high、thigh_high、other、unknown。
+- 鞋子类型只能使用 sneakers、heels、flats、loafers、boots、sandals、slippers、other、unknown。
+- 普通袜子和鞋子必须分别输出；可以同时存在。
+- 丝袜不属于本区域输出的独立物品；如果看到丝袜覆盖，可以记录在 evidence 中，但不要把它合并到普通袜子或鞋子。
+- 只有脚部皮肤直接裸露，且没有被袜子、丝袜或鞋子覆盖时，才能判断为 barefoot。
+- 脚部完全不可见时使用 not_visible，不能使用 not_barefoot。
+- 一只脚穿鞋、另一只脚不穿时，必须分别记录左右脚。
+- bbox 使用相对裁剪图的归一化坐标；没有把握返回 null。
+- 只输出 json。
+
+输出结构示例：
+{
+  "left_foot": {
+    "person_side": "unknown",
+    "side_basis": "unknown",
+    "side_confidence": "low",
+    "visibility": "clear",
+    "barefoot": "not_barefoot",
+    "skin_visible": false,
+    "socks": {
+      "presence": "detected",
+      "visibility": "clear",
+      "type": "ankle",
+      "attributes": {"color": "white", "visual_material": "knit", "texture": "ribbed", "visual_thickness": "medium", "sheerness_level": 0, "covers_feet": true},
+      "bbox": {"x": 0.05, "y": 0.3, "width": 0.35, "height": 0.6},
+      "occlusion_reason": [],
+      "confidence": "high",
+      "evidence": ["可见白色短袜边缘"]
+    },
+    "shoes": {
+      "presence": "detected",
+      "visibility": "clear",
+      "type": "sneakers",
+      "attributes": {"color": "white", "shoe_shape": "low_top", "visible": true, "occluded": false},
+      "bbox": {"x": 0.02, "y": 0.55, "width": 0.42, "height": 0.4},
+      "occlusion_reason": [],
+      "confidence": "high",
+      "evidence": ["可见白色运动鞋"]
+    },
+    "occlusion_reason": [],
+    "confidence": "high",
+    "evidence": []
+  },
+  "right_foot": {
+    "person_side": "unknown",
+    "side_basis": "unknown",
+    "side_confidence": "low",
+    "visibility": "clear",
+    "barefoot": "barefoot",
+    "skin_visible": true,
+    "socks": {"presence": "not_detected", "visibility": "clear", "type": "unknown", "attributes": {}, "bbox": null, "occlusion_reason": [], "confidence": "medium", "evidence": ["脚背和脚趾裸露"]},
+    "shoes": {"presence": "not_detected", "visibility": "clear", "type": "unknown", "attributes": {}, "bbox": null, "occlusion_reason": [], "confidence": "medium", "evidence": ["脚背和脚趾裸露"]},
+    "occlusion_reason": [],
+    "confidence": "medium",
+    "evidence": ["脚部皮肤直接可见"]
+  },
+  "warnings": []
+}

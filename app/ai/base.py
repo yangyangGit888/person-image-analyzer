@@ -62,6 +62,8 @@ class BaseVisionProvider(ABC):
     async def aclose(self) -> None:
         """释放底层 HTTP 连接，默认无操作。"""
 
+        return None
+
     async def __aenter__(self) -> BaseVisionProvider:
         return self
 

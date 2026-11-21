@@ -360,7 +360,12 @@ class AnalysisService:
         self._provider = provider
         self._settings = settings
 
-    async def analyze(self, image: ImageInput) -> AnalysisData:
+    async def analyze(
+        self,
+        image: ImageInput,
+        *,
+        request_id: str | None = None,
+    ) -> AnalysisData:
         """调用视觉模型并返回校验后的人物属性结果。"""
 
         prompt = build_person_analysis_prompt(image.width, image.height)
@@ -382,7 +387,7 @@ class AnalysisService:
             logger.exception("解析模型分析结果时发生未预期异常")
             raise AIInvalidResponseError() from exc
 
-        self._log_usage(result, len(data.persons))
+        self._log_usage(result, len(data.persons), request_id=request_id)
 
         if self._settings.enable_crop_refinement:
             data = await self.refine_with_crops(image, data)
@@ -410,9 +415,15 @@ class AnalysisService:
         return data
 
     @staticmethod
-    def _log_usage(result: ModelResult, person_count: int) -> None:
+    def _log_usage(
+        result: ModelResult,
+        person_count: int,
+        *,
+        request_id: str | None = None,
+    ) -> None:
         logger.info(
-            "分析完成 provider=%s model=%s persons=%s usage=%s",
+            "分析完成 request_id=%s provider=%s model=%s persons=%s usage=%s",
+            request_id,
             result.provider,
             result.model,
             person_count,
