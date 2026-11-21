@@ -7,6 +7,7 @@
 - 应用版本：`1.3.0`
 - 当前分支：`person-image-analyzer-pro1.0`
 - Phase 3 提交：`c5b3752 feat: complete phase 3 image and video analysis pipeline`
+- Phase 3.1 状态文档提交：`05f0532 docs: add project status and phase 3 handoff`
 - 上一回滚点：`34ad24f feat: add person image attribute analysis backend`
 
 ## 已实现功能
@@ -71,7 +72,7 @@ git diff --check
 
 结果：
 
-- pytest：**105 项全部通过**
+- pytest：**108 项全部通过**
 - ruff：全部通过
 - pip check：无依赖冲突
 - git diff --check：通过
@@ -82,21 +83,52 @@ git diff --check
 - 视频：4 个分析帧，12 次调用，61,188 tokens，约 6.5 分钟
 - 自动化测试不产生 API 费用
 
+## Phase 5 识别质量评估
+
+- 数据集：Doc1.docx 17 页，提取为 `img_001`～`img_017`
+- 人工标注：17 条 JSONL
+- 当前生产 Prompt 基线：
+  - Macro Precision：0.887
+  - Macro Recall：0.852
+  - Macro F1：0.837
+  - 下装 Category Accuracy：0.625
+  - 普通袜子 Type Accuracy：0.333
+  - 鞋子 Type Accuracy：0.182
+  - 鞋子 Group Accuracy：0.182
+  - Side Accuracy：N/A（标注集没有左右侧标签）
+  - Side Abstention Rate：0.867
+- 评估报告：`evaluation/reports/latest.md`
+- 图片、标注和原始预测默认不提交 Git，报告和评估代码提交
+
+### Phase 6 第一次实验
+
+- 实验：`evaluation/reports/experiments/prompt_v2_2026-11-21.md`
+- Macro F1：0.837 → 0.841
+- Recall：0.852 → 0.870
+- 鞋子 Recall：0.545 → 0.636
+- 普通袜子 Type Accuracy：0.333 → 0.000
+- 多人物样本仍误判
+- 结论：未通过回归标准，生产 Prompt 已回退到基线
+
 ## 已知问题
 
 - 视频 V2 单帧分析只覆盖单人；多人视频失败。
 - 视频首版最多分析约 4 个关键帧，不覆盖每一帧。
 - 侧向、坐姿、交叉腿、镜面自拍时左右侧经常为 `unknown`，这是保守行为。
 - 长裤/长裙遮挡下的丝袜/袜子无法可靠判断。
-- 尚未建立正式人工标注评估集和 P/R/F1 报告。
+- 17 张样本是小规模初始集；下装短裤/裙装、one_piece/裙装存在标签和模型混淆。
+- 鞋子存在漏检，普通袜子长度类型准确率低。
+- 多人物图片可能把背景人物计入 person_count，当前样本 `img_014` 触发多人回退。
+- 标注集中个别样本存在歧义（如 img_006、img_015），需要复核。
+- 当前标注集没有左右侧标签，Side Accuracy 暂不可计算。
 - 尚未实现按需 Mask（Phase 4 暂缓）。
 - FFmpeg 为最小 LGPL 构建，无硬件加速。
 - 当前 Phase 3 提交之后的工作区改动（如评估工具）需要单独提交。
 
 ## 下一阶段
 
-1. Phase 5：人工标注数据集与识别质量评估。
-2. Phase 6：Prompt、关键帧、API 调用和融合优化，必须通过 Phase 5 回归。
+1. Phase 5：已完成 17 张基线评估；后续扩充到 60～100 张并复核歧义标签。
+2. Phase 6：拆分 Prompt/裁帧/融合优化，逐项 A/B 回归；当前第一次 Prompt 实验未采纳。
 3. Phase 7：API 稳定、批量分析、日志监控、部署和交付。
 4. Phase 4（按需 Mask）暂缓。
 

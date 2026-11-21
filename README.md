@@ -1,6 +1,6 @@
 # AI 图片人物穿着属性识别系统
 
-基于 FastAPI + DeepSeek 视觉模型的后端服务。用户上传人物图片或单人短视频，服务返回结构化穿着属性。当前仓库处于 **Phase 3：视频分析**。
+基于 FastAPI + DeepSeek 视觉模型的后端服务。用户上传人物图片或单人短视频，服务返回结构化穿着属性。当前仓库已完成 Phase 3.1 工程收尾和 Phase 5 初始评估，正在进入 Phase 6 质量/成本优化。
 
 - 图片分析接口 `POST /api/v1/analyze` 已可用，响应结构保持旧版兼容。
 - 已引入 Prompt 外置与版本管理、V2 数据结构、坐标工具、SQLite 元数据仓库、受控本地存储、分组件健康检查和统一 `request_id`。
@@ -432,7 +432,7 @@ pytest
 ruff check app tests scripts
 ```
 
-当前测试覆盖（105 项）：
+当前测试覆盖（108 项）：
 
 - 旧图片上传、格式、缩放、GIF、HEIC。
 - 旧结构归一化、多人、错误映射。
@@ -448,15 +448,39 @@ ruff check app tests scripts
 - 视频 API 任务状态/取消/结果，Worker 完成和取消。
 - 存储路径穿越和文件删除。
 
-## 11. 阶段计划
+## 11. 识别质量评估
+
+```bash
+.venv/bin/python -m evaluation.run_evaluation --concurrency 2
+```
+
+当前 17 张人工标注图片的基线：
+
+- Macro Precision：0.887
+- Macro Recall：0.852
+- Macro F1：0.837
+- 下装 Category Accuracy：0.625
+- 普通袜子 Type Accuracy：0.333
+- 鞋子 Type Accuracy：0.182
+- Side Accuracy：N/A（评估集暂无左右侧标签）
+- Side Abstention Rate：0.867
+
+报告：`evaluation/reports/latest.md`
+
+原始图片、人工标注和预测 JSONL 默认不提交 Git；评估代码和汇总报告提交。Phase 6 第一次 Prompt 实验未通过回归，已回退，详见 `evaluation/reports/README.md`。
+
+## 12. 阶段计划
 
 - **Phase 1（已完成）**：配置、Prompt、V2 schema、坐标、SQLite、存储、健康检查、脚本、测试。
 - **Phase 2（已完成）**：图片多阶段分析、下装/丝袜/袜子/鞋/赤脚、观察性、关系、物品 BBox，追加 V2 响应。
-- **Phase 3（当前）**：FFmpeg、Dense 抽帧、质量/去重/选帧、Worker、视频 API、多帧融合、取消与恢复。
+- **Phase 3（已完成）**：FFmpeg、Dense 抽帧、质量/去重/选帧、Worker、视频 API、多帧融合、取消与恢复。
+- **Phase 3.1（已完成）**：Git、测试、代码检查、环境、配置、文档、日志和回滚点。
+- **Phase 5（初始基线已完成）**：17 张人工标注图片、P/R/F1、类别/可见性/弃权率。
+- **Phase 6（进行中）**：Prompt/关键帧/调用/融合优化，必须通过评估集回归。
 - **Phase 4**：按需 Mask，默认粗略 BBox Mask 并明确标记 `precision=coarse`。
 - **Phase 5**：部署文档、完整评估集、性能/成本测试。
 
-## 12. 已知限制
+## 13. 已知限制
 
 - 单人图片已接入局部裁剪；多人图片仍使用旧版单次调用。
 - V2 物品分析仅支持单人图片；多人图片明确返回兼容结果。
@@ -467,29 +491,29 @@ ruff check app tests scripts
 - 系统没有专用分割模型，Mask 只能先提供粗略矩形，不能声称像素级精确。
 - 图片分析默认不落盘；Mask 需要原图，Phase 4 会启用受控持久化。
 
-## 13. 常见问题
+## 14. 常见问题
 
-### 13.1 `ModuleNotFoundError: No module named 'app'`
+### 14.1 `ModuleNotFoundError: No module named 'app'`
 
 在项目根目录启动，并激活 `.venv`。
 
-### 13.2 `AI_AUTH_ERROR`
+### 14.2 `AI_AUTH_ERROR`
 
 检查 `.env` 中 `AI_API_KEY` 或 `DEEPSEEK_API_KEY` 是否正确、是否过期、前后是否有空格。
 
-### 13.3 `AI_TIMEOUT`
+### 14.3 `AI_TIMEOUT`
 
 大图、多人图片和思考模式会增加耗时。可提高 `AI_TIMEOUT`，或设置 `AI_ENABLE_THINKING=false`。
 
-### 13.4 `AI_INVALID_JSON` / `AI_EMPTY_RESPONSE`
+### 14.4 `AI_INVALID_JSON` / `AI_EMPTY_RESPONSE`
 
 确认 Prompt 含 “json” 和示例；输出可能被 `AI_MAX_OUTPUT_TOKENS` 截断。服务会处理空内容，但建议客户端重试。
 
-### 13.5 FFmpeg 未找到
+### 14.5 FFmpeg 未找到
 
 视频分析需要 `ffmpeg` 和 `ffprobe`。可将符合许可证要求的构建放入 `runtime/bin/`，或在 `.env` 设置 `FFMPEG_BINARY` / `FFPROBE_BINARY`。不要仅因为项目介绍是 LGPL 就认为所有编译版本都是 LGPL，分发前必须检查实际构建配置和许可证。
 
-### 13.6 端口被占用
+### 14.6 端口被占用
 
 ```bash
 PORT=8001 ./scripts/start.sh

@@ -1,0 +1,142 @@
+{
+  "source": "Doc1.docx",
+  "count": 17,
+  "images": [
+    {
+      "sample_id": "img_001",
+      "source_page": 1,
+      "source_media": "media/image1.png",
+      "file": "img_001.png",
+      "width": 768,
+      "height": 970
+    },
+    {
+      "sample_id": "img_002",
+      "source_page": 2,
+      "source_media": "media/image2.png",
+      "file": "img_002.png",
+      "width": 1802,
+      "height": 1152
+    },
+    {
+      "sample_id": "img_003",
+      "source_page": 3,
+      "source_media": "media/image3.png",
+      "file": "img_003.png",
+      "width": 746,
+      "height": 1210
+    },
+    {
+      "sample_id": "img_004",
+      "source_page": 4,
+      "source_media": "media/image4.png",
+      "file": "img_004.png",
+      "width": 772,
+      "height": 1070
+    },
+    {
+      "sample_id": "img_005",
+      "source_page": 5,
+      "source_media": "media/image5.png",
+      "file": "img_005.png",
+      "width": 730,
+      "height": 1052
+    },
+    {
+      "sample_id": "img_006",
+      "source_page": 6,
+      "source_media": "media/image6.png",
+      "file": "img_006.png",
+      "width": 796,
+      "height": 1394
+    },
+    {
+      "sample_id": "img_007",
+      "source_page": 7,
+      "source_media": "media/image7.png",
+      "file": "img_007.png",
+      "width": 2108,
+      "height": 1068
+    },
+    {
+      "sample_id": "img_008",
+      "source_page": 8,
+      "source_media": "media/image8.png",
+      "file": "img_008.png",
+      "width": 878,
+      "height": 1016
+    },
+    {
+      "sample_id": "img_009",
+      "source_page": 9,
+      "source_media": "media/image9.png",
+      "file": "img_009.png",
+      "width": 506,
+      "height": 936
+    },
+    {
+      "sample_id": "img_010",
+      "source_page": 10,
+      "source_media": "media/image10.png",
+      "file": "img_010.png",
+      "width": 1116,
+      "height": 870
+    },
+    {
+      "sample_id": "img_011",
+      "source_page": 11,
+      "source_media": "media/image11.png",
+      "file": "img_011.png",
+      "width": 784,
+      "height": 1122
+    },
+    {
+      "sample_id": "img_012",
+      "source_page": 12,
+      "source_media": "media/image12.png",
+      "file": "img_012.png",
+      "width": 794,
+      "height": 1292
+    },
+    {
+      "sample_id": "img_013",
+      "source_page": 13,
+      "source_media": "media/image13.png",
+      "file": "img_013.png",
+      "width": 496,
+      "height": 970
+    },
+    {
+      "sample_id": "img_014",
+      "source_page": 14,
+      "source_media": "media/image14.png",
+      "file": "img_014.png",
+      "width": 798,
+      "height": 1220
+    },
+    {
+      "sample_id": "img_015",
+      "source_page": 15,
+      "source_media": "media/image15.png",
+      "file": "img_015.png",
+      "width": 798,
+      "height": 1356
+    },
+    {
+      "sample_id": "img_016",
+      "source_page": 16,
+      "source_media": "media/image16.png",
+      "file": "img_016.png",
+      "width": 376,
+      "height": 806
+    },
+    {
+      "sample_id": "img_017",
+      "source_page": 17,
+      "source_media": "media/image17.png",
+      "file": "img_017.png",
+      "width": 1260,
+      "height": 1080
+    }
+  ]
+}

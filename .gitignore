@@ -33,3 +33,9 @@ logs/
 .run/
 models/
 runtime/bin/
+
+# 人工标注数据、原始图片、预测原始输出和联系表默认不提交
+evaluation/dataset/images/
+evaluation/dataset/contact_sheet.jpg
+evaluation/annotations/
+evaluation/predictions/
